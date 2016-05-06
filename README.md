@@ -1,1 +1,2 @@
-# bm.docker.nginx1
+# bm.docker.nginx
+Docker image for nginx
