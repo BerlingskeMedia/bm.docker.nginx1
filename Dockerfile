@@ -7,7 +7,6 @@ ADD logformat.conf /etc/nginx/conf.d
 
 RUN echo "upstream php-upstream { server php:9000; }" > /etc/nginx/conf.d/upstream.conf
 
-RUN usermod -u 1000 www-data
-RUN groupmod -g 1000 www-data
+ADD runit.sh /
 
-CMD ["nginx"]
+CMD ["/runit.sh"]
