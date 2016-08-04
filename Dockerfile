@@ -3,7 +3,8 @@ FROM ubuntu:xenial
 ENV REFRESHED_AT "2016-06-27 14:04:00"
 
 RUN apt-get update \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -y -q nginx net-tools
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y -q nginx net-tools \
+    && rm -rf /var/lib/apt/lists/*
 
 ADD nginx.conf /etc/nginx/
 ADD logformat.conf /etc/nginx/conf.d
