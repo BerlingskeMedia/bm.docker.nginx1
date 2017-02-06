@@ -1,12 +1,18 @@
-FROM debian:jessie
+FROM ubuntu:xenial
 
-RUN apt-get update && apt-get install -y nginx && apt-get install -y net-tools
+ENV REFRESHED_AT "2016-06-27 14:04:00"
+
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y -q nginx net-tools \
+    && rm -rf /var/lib/apt/lists/*
 
 ADD nginx.conf /etc/nginx/
 ADD logformat.conf /etc/nginx/conf.d
 
-RUN echo "upstream php-upstream { server php:9000; }" > /etc/nginx/conf.d/upstream.conf
+# forward request and error logs to docker log collector
+RUN ln -sf /dev/stdout /var/log/nginx/access.log \
+	&& ln -sf /dev/stderr /var/log/nginx/error.log
 
-ADD runit.sh /
+EXPOSE 80 443
 
-CMD ["/runit.sh"]
+CMD ["nginx", "-g", "daemon off;"]
